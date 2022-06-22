@@ -7,15 +7,10 @@ import './Dashboard.scss';
 
 function Dashboard() {
   const [weatherReports, setWeatherReports] = useState<WeatherReport[]>([]);
-  const [fetchWeatherData, setWeatherDataFetchStatus] = useState(true);
 
   useEffect(() => {
-    if (fetchWeatherData) {
-      setWeatherDataFetchStatus(false);
-
-      WeatherService.getCapitalCitiesWeather().then((weatherResponse) => setWeatherReports(weatherResponse));
-    }
-  }, [fetchWeatherData]);
+    WeatherService.getCapitalCitiesWeather().then((weatherResponse) => setWeatherReports(weatherResponse));
+  }, []);
 
   return (
     <div className="Dashboard">
