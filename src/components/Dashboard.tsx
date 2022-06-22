@@ -9,7 +9,7 @@ function Dashboard() {
     if (fetchWeatherData) {
       setWeatherDataFetchStatus(false);
 
-      WeatherService.getTestWeather().then((weatherResponse) => setWeather(JSON.stringify(weatherResponse)));
+      WeatherService.getCapitalCitiesWeather().then((weatherResponse) => setWeather(JSON.stringify(weatherResponse)));
     }
   }, [fetchWeatherData]);
 

@@ -1,20 +1,44 @@
 import axios, { AxiosResponse } from 'axios';
-import { PointWeather } from '../models';
+import { LatLon, PointWeather, WeatherCondition } from '../models';
 
 const WeatherService = {
-  getTestWeather(): Promise<PointWeather> {
-    return axios
-      .get('https://api.openweathermap.org/data/2.5/weather?lat=-37&lon=144&appid=d7c27ec41b2729645285babcff08df24')
-      .then(function (response) {
-        console.log(`Got weather data: ${JSON.stringify(response.data)}`);
-        return getPointWeatherFromOpenWeatherResponse(response);
-      });
-  },
+  async getCapitalCitiesWeather(): Promise<PointWeather[]> {
+    const melbourneWeatherRequest = axios.get(
+      getWeatherRequestUrlFromLatLon({
+        lat: -37.813629,
+        lon: 144.963058
+      })
+    );
 
-  getCapitalCitiesWeather(): PointWeather[] | null {
-    return null;
+    const adelaideWeatherRequest = axios.get(
+      getWeatherRequestUrlFromLatLon({
+        lat: -34.928497,
+        lon: 138.600739
+      })
+    );
+
+    const sydneyWeatherRequest = axios.get(
+      getWeatherRequestUrlFromLatLon({
+        lat: -33.86882,
+        lon: 151.20929
+      })
+    );
+
+    return await axios
+      .all([melbourneWeatherRequest, adelaideWeatherRequest, sydneyWeatherRequest])
+      .then((responses) => responses.map((response) => getPointWeatherFromOpenWeatherResponse(response)));
   }
 };
+
+function getWeatherRequestUrlFromLatLon(latLon: LatLon): string {
+  return (
+    `https://api.openweathermap.org/data/2.5/weather` +
+    `?lat=${latLon.lat}` +
+    `&lon=${latLon.lon}` +
+    `&units=metric` +
+    `&appid=d7c27ec41b2729645285babcff08df24`
+  );
+}
 
 function getPointWeatherFromOpenWeatherResponse(response: AxiosResponse<any, any>): PointWeather {
   const { data } = response;
@@ -26,10 +50,26 @@ function getPointWeatherFromOpenWeatherResponse(response: AxiosResponse<any, any
       lat: data.coord.lat,
       lon: data.coord.lon
     },
-    weather: null,
-    main: null,
+    weather: getWeatherConditionFromJson(data.weather),
+    main: {
+      temp: data.main.temp,
+      feels_like: data.main.feels_like,
+      humidity: data.main.humidity,
+      pressure: data.main.pressure
+    },
     wind: null
   };
+}
+
+function getWeatherConditionFromJson(weatherCondition: any[]): WeatherCondition[] {
+  return weatherCondition.map(function (weatherCondition: any): WeatherCondition {
+    return {
+      id: weatherCondition.id,
+      main: weatherCondition.main,
+      description: weatherCondition.description,
+      icon: weatherCondition.icon
+    };
+  });
 }
 
 export default WeatherService;
