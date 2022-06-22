@@ -1,0 +1,29 @@
+.Dashboard {
+  margin: 40px 20px 20px 20px;
+
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+
+  h1 {
+    font-size: 30px;
+    font-weight: 300;
+
+    text-align: center;
+
+    margin: 0 0 8px 0;
+  }
+
+  .subtitle {
+    font-size: 12px;
+    font-weight: 300;
+    text-align: center;
+
+    color: darkslategray;
+  }
+
+  .weather-tiles {
+    display: flex;
+    flex-wrap: wrap;
+
+    margin-top: 20px;
+  }
+}

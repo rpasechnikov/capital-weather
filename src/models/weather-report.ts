@@ -6,7 +6,7 @@ import { WindCondition } from './wind-condition';
 /** Represents a response (with props we care about) from
  * https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}
  * See: https://openweathermap.org/current */
-export interface PointWeather {
+export interface WeatherReport {
   id: number;
   /** City name */
   name: string;

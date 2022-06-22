@@ -1,31 +1,74 @@
 import axios, { AxiosResponse } from 'axios';
-import { LatLon, PointWeather, WeatherCondition } from '../models';
+import { LatLon, WeatherReport, WeatherCondition } from '../models';
 
 const WeatherService = {
-  async getCapitalCitiesWeather(): Promise<PointWeather[]> {
-    const melbourneWeatherRequest = axios.get(
-      getWeatherRequestUrlFromLatLon({
-        lat: -37.813629,
-        lon: 144.963058
-      })
-    );
-
-    const adelaideWeatherRequest = axios.get(
-      getWeatherRequestUrlFromLatLon({
-        lat: -34.928497,
-        lon: 138.600739
-      })
-    );
-
-    const sydneyWeatherRequest = axios.get(
-      getWeatherRequestUrlFromLatLon({
-        lat: -33.86882,
-        lon: 151.20929
-      })
-    );
-
+  async getCapitalCitiesWeather(): Promise<WeatherReport[]> {
     return await axios
-      .all([melbourneWeatherRequest, adelaideWeatherRequest, sydneyWeatherRequest])
+      .all([
+        // Canberra
+        axios.get(
+          getWeatherRequestUrlFromLatLon({
+            lat: -35.282001,
+            lon: 149.128998
+          })
+        ),
+
+        // Melbourne
+        axios.get(
+          getWeatherRequestUrlFromLatLon({
+            lat: -37.813629,
+            lon: 144.963058
+          })
+        ),
+
+        // Adelaide
+        axios.get(
+          getWeatherRequestUrlFromLatLon({
+            lat: -34.928497,
+            lon: 138.600739
+          })
+        ),
+
+        // Sydney
+        axios.get(
+          getWeatherRequestUrlFromLatLon({
+            lat: -33.86882,
+            lon: 151.20929
+          })
+        ),
+
+        // Brisbane
+        axios.get(
+          getWeatherRequestUrlFromLatLon({
+            lat: -27.46977,
+            lon: 153.025131
+          })
+        ),
+
+        // Perth
+        axios.get(
+          getWeatherRequestUrlFromLatLon({
+            lat: -31.950527,
+            lon: 115.860458
+          })
+        ),
+
+        // Darwin
+        axios.get(
+          getWeatherRequestUrlFromLatLon({
+            lat: -12.462827,
+            lon: 130.841782
+          })
+        ),
+
+        // Hobart
+        axios.get(
+          getWeatherRequestUrlFromLatLon({
+            lat: -42.880554,
+            lon: 147.324997
+          })
+        )
+      ])
       .then((responses) => responses.map((response) => getPointWeatherFromOpenWeatherResponse(response)));
   }
 };
@@ -40,7 +83,7 @@ function getWeatherRequestUrlFromLatLon(latLon: LatLon): string {
   );
 }
 
-function getPointWeatherFromOpenWeatherResponse(response: AxiosResponse<any, any>): PointWeather {
+function getPointWeatherFromOpenWeatherResponse(response: AxiosResponse<any, any>): WeatherReport {
   const { data } = response;
 
   return {

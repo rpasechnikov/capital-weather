@@ -1,0 +1,61 @@
+.WeatherTile {
+  display: flex;
+  flex-direction: column;
+
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 0%;
+
+  border: 2px solid rgb(122, 132, 161);
+  border-radius: 5px;
+
+  color: darkslategray;
+  background-color: rgb(191 208 255);
+
+  text-align: center;
+
+  padding: 10px;
+  margin: 10px;
+
+  min-width: 200px;
+  max-width: 810px;
+
+  .city-name {
+    font-weight: 500;
+    color: black;
+
+    margin-bottom: 10px;
+  }
+
+  .weather {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-grow: 1;
+    justify-content: space-around;
+
+    font-size: 12px;
+
+    img {
+      margin: -10px;
+    }
+
+    .temp-pressure-humidity {
+      text-align: left;
+
+      div {
+        .key {
+          font-weight: 500;
+        }
+
+        .value {
+          display: inline-block;
+
+          &::first-letter {
+            text-transform: capitalize;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,19 +1,33 @@
 import { useEffect, useState } from 'react';
+import { WeatherReport } from '../models';
 import WeatherService from '../services/weather.service';
+import WeatherTile from './WeatherTile';
+
+import './Dashboard.scss';
 
 function Dashboard() {
-  const [weather, setWeather] = useState<any>(null);
+  const [weatherReports, setWeatherReports] = useState<WeatherReport[]>([]);
   const [fetchWeatherData, setWeatherDataFetchStatus] = useState(true);
 
   useEffect(() => {
     if (fetchWeatherData) {
       setWeatherDataFetchStatus(false);
 
-      WeatherService.getCapitalCitiesWeather().then((weatherResponse) => setWeather(JSON.stringify(weatherResponse)));
+      WeatherService.getCapitalCitiesWeather().then((weatherResponse) => setWeatherReports(weatherResponse));
     }
   }, [fetchWeatherData]);
 
-  return <div>{weather}</div>;
+  return (
+    <div className="Dashboard">
+      <h1>Capital Weather</h1>
+      <div className="subtitle">Australian capital cities weather report</div>
+      <div className="weather-tiles">
+        {weatherReports.map((weatherReport) => (
+          <WeatherTile key={weatherReport.name} {...weatherReport}></WeatherTile>
+        ))}
+      </div>
+    </div>
+  );
 }
 
 export default Dashboard;
